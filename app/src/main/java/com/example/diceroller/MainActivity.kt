@@ -15,22 +15,42 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val rollButton: Button = findViewById(R.id.button)
 
-        rollButton.setOnClickListener { rollDice() }
+        rollButton.setOnClickListener { rollMultiDices(2) }
 
-        // Roll the dice at app start
-        rollDice()
+        // Find the image view in the layout for ALL dices and roll them
+        rollMultiDices(2)
+    }
+
+    /**
+     * Function to roll multiple dices
+     */
+    private fun rollMultiDices(numOfDices: Int) {
+
+        // Find the image view in the layout for all dices and roll them
+        for (i in (1..numOfDices)) {
+            rollDice(findViewById(getImageViewId(i)))
+        }
+    }
+
+    /**
+     * Function to get Image View ID based on dice number
+     */
+    private fun getImageViewId(diceNum: Int): Int {
+        return when (diceNum) {
+            1 -> (R.id.imageView)
+            else -> (R.id.imageView2)
+        }
     }
 
     /**
      * Roll the Dice and update the screen with results*
      */
-    private fun rollDice() {
+    private fun rollDice(diceImage: ImageView) {
         // Create Dice object with number of sides as 6
         val dice = Dice(6)
-        val diceRoll = dice.roll()
 
-        // Find the image view in the layout
-        val diceImage: ImageView = findViewById(R.id.imageView)
+        // Roll the dice
+        val diceRoll = dice.roll()
 
         // Determine which Drawable Resource ID based on the dice roll
         val drawableResource = when (diceRoll) {
